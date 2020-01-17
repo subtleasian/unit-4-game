@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="assets/css/reset.css" type="text/css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css" type="text/css">
+
+    <title>Star Wars: Battle Arena</title>
+  </head>
+  <body>
+    <div class="container">
+        <h1 class="display-5">Star Wars: Battle Arena!</h1>
+        <p class="lead">Please select a character to begin.</p>
+        <hr>
+    </div>
+    
+    <div class="container">
+        <div class="row mb-5">
+            <div class="col-sm-1">
+                    <img src="assets/images/boba-fett.png" class="fighter" id="boba-fett" alt="Boba Fett" style="width: 40px; margin: auto auto">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="c3po" src="assets/images/c3po.png" alt="C-3PO" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="chewbacca" src="assets/images/chewbacca.png" alt="Chewbacca" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="darth-maul" src="assets/images/darth-maul.png" alt="Darth Maul" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="darth-vader" src="assets/images/darth-vader.png" alt="Darth Vader" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="han-solo" src="assets/images/han-solo.png" alt="Han Solo" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="luke-skywalker" src="assets/images/luke-skywalker.png" alt="Luke Skywalker" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="obi-wan-kenobi" src="assets/images/obi-wan-kenobi.png" alt="Obi-Wan Kenobi" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="princess-leia" src="assets/images/princess-leia.png" alt="Princess Leia" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="r2d2" src="assets/images/r2d2.png" alt="R2-D2" style="height: 60px">  
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="storm-trooper" src="assets/images/storm-trooper.png" alt="Storm Trooper" style="height: 60px">
+            </div>
+            <div class="col-sm-1">
+                <img class="fighter" id="yoda" src="assets/images/yoda.png" alt="Yoda" style="height: 60px">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mb-5">
+        <div class="row" style="height: 350px;">
+            <div class="card" id="player1" style="width: 50%;">
+                <h5>Choose Your Fighter: </h5>
+                <img class="card-img-top" id="player1-img" style="width:120px; margin:auto auto;">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Health Power:</li>
+                    <li class="list-group-item">Attack Power:</li>
+                </ul>
+            </div>
+            <div class="card" id="player2" style="width: 50%;">
+                <h5>Choose Your Enemy:</h5>
+                <img class="card-img-top" id="player2-img" style="width:120px; margin:auto auto;">
+                <div class="progress">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Health Power:</li>
+                    <li class="list-group-item">Attack Power:</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <button type="button" class="btn btn-primary btn-block" id="atk-btn">Attack</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="overflow-auto fixed-bottom mb-3 card" id="system-alerts" style="height: 150px; width: 100%;">
+
+    </div>
+    
+    
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var player1 = {
+                hp: 0,
+                ap: 0,
+                cap: 0
+            }
+
+            var player2 = {
+                hp: 0,
+                cap: 0,
+            }
+
+            var bobaFett = {
+                hp: 80,
+                ap: 8,
+            }
+
+            var p1img = document.getElementById("player1-img");
+            var p2img = document.getElementById("player2-img");
+            var p1selected = false;
+            var p2selected = false;
+
+            $(".fighter").on("click", function(){
+                if (p1selected === false) {
+                    p1img.src = this.src;
+                    p1selected = true;
+                    console.log($(this));
+                    console.log(this);
+                    this.remove();
+                    $("#system-alerts").prepend("<span>You have selected your fighter.</span>");
+                    
+                } else if (p2selected === false) {
+                    p2img.src = this.src;
+                    p2selected = true;
+                    this.remove();
+                    $("#system-alerts").prepend("<span>You have selected your enemy.</span>");
+                }
+            })
+
+            $("#atk-btn").on("click", function() {
+                $("#system-alerts").prepend("<span>You have pressed attack.</span>");
+            })
+
+
+        })
+    </script>
+  </body>
+</html>
