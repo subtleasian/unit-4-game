@@ -13,7 +13,7 @@
     <title>Star Wars: Battle Arena</title>
   </head>
   <body>
-    <div class="container">
+    <div class="container" id="heading">
         <h1 class="display-5">Star Wars: Battle Arena!</h1>
         <p class="lead" id="marching-orders">Please select a character to begin.</p>
         <hr>
@@ -61,14 +61,12 @@
     </div>
 
     <div class="container mb-5">
-        <div class="row" style="height: 350px;">
+        <div class="row" style="height: 375px;">
             <div class="card" id="player1" style="width: 50%;">
                 <h5>Choose Your Fighter: </h5>
                 <img class="card-img-top" id="player1-img" style="width:120px; margin:auto auto;">
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span id="p1">Player 1</span></li>
                     <li class="list-group-item">Health Power: <span id="p1-hp">n/a</span></li>
                     <li class="list-group-item">Attack Power: <span id="p1-ap">n/a</span></li>
                 </ul>
@@ -76,10 +74,8 @@
             <div class="card" id="player2" style="width: 50%;">
                 <h5>Choose Your Enemy:</h5>
                 <img class="card-img-top" id="player2-img" style="width:120px; margin:auto auto;">
-                <div class="progress">
-                    <div class="progress-bar bg-success" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
                 <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><span id="p2">Player 2</span></li>
                     <li class="list-group-item">Health Power: <span id="p2-hp">n/a</span></li>
                     <li class="list-group-item">Attack Power: <span id="p2-ap">n/a</span></li>
                 </ul>
@@ -108,6 +104,7 @@
         $(document).ready(function() {
             var p1img = document.getElementById("player1-img");
             var p2img = document.getElementById("player2-img");
+            var character = "";
 
             var characters = {
                 bobaFett: {
@@ -237,11 +234,17 @@
 
                     if (player2.hp > 0) {
                         player2.loadStats();
-                        setTimeout(function(){$("#system-alerts").prepend("<span>>> You attacked the enemy. Their HP is now " + player2.hp + ". Your attack has increased your AP by " + player1.baseAP + " points. Your AP is now " + player1.ap + ". </span>")}, 1000);
+                        $("#system-alerts").prepend("<span style='color: blue'>>> You attacked the enemy. Their HP is now " + player2.hp + ". Your attack has increased your AP by " + player1.baseAP + " points. Your AP is now " + player1.ap + ". </span>");
                         player2.counterAttack();
                     } else {
                         player2.isDefeated();
-                        setTimeout(function(){$("#system-alerts").prepend("<span>>> You have defeated the enemy! May the force be with you. Please choose your next opponent.</span>")}, 1000);
+                    }
+                },
+                isAlive: function(){
+                    if (this.hp > 0) {
+                        return true;
+                    } else {
+                        return false;
                     }
                 }
             }
@@ -269,13 +272,20 @@
                     $("#p2-ap").text(this.cap);
                 },
                 counterAttack: function() {
-                    setTimeout(function(){$("#system-alerts").prepend("<span style>>> The Enemy has counter-attacked. Your HP is now " + player1.hp + ".</span>")}, 2000);
                     player1.hp = player1.hp - this.cap;
                     player1.loadStats();
+
+                    if (player1.isAlive() === true) {    
+                        $("#system-alerts").prepend("<span style='color: red;'>>> The Enemy has counter-attacked. Your HP is now " + player1.hp + ".</span>");
+                    } else {
+                        $("#system-alerts").prepend("<span style='color: red; font-size: 24px;'>>> The Enemy has delivered a crushing blow as a counter-attack. You have been defeated! Please try again.</span>");
+                        $("#atk-btn").text("Try Again!");
+                    }
                 },
                 isDefeated: function() {
-                    characters[this.characterID]["defeated"] = true;
-                    console.log(characters[this.characterID]["defeated"]);
+                    characters[character]["defeated"] = true;
+                    console.log(characters[character]["defeated"]);
+                    $("#p2").text("n/a");
                     $("#p2-hp").text("n/a");
                     $("#p2-ap").text("n/a");
                     p2img.src = "";
@@ -284,108 +294,74 @@
                     this.hp = 0;
                     this.ap = 0;
                     this.cap = 0;
+                    checkStatus();
                 }
             };
 
-            function checkstatus(){
-                var selectedCount = 0;
+            function checkStatus(){
+                var defeatedCount = 0;
                 var objKeys = Object.keys(characters);
                 for (var i = 0; i < objKeys.length; i++) {
-                    if (characters[objKeys[i]]["selected"] === true) {
-                        selectedCount++;
+                    if (characters[objKeys[i]]["defeated"] === true) {
+                        defeatedCount++;
                     }
                 }
-                console.log(selectedCount);
+
+                if (defeatedCount < (objKeys.length - 1)) {
+                    $("#system-alerts").prepend("<span style='color: green;'>>> You have defeated the enemy! May the force be with you. Please choose your next opponent.</span>");
+                    return false;
+                } else {
+                    $("#system-alerts").prepend("<span style='color: green;'>>> You are the master of the multi-verse!</span>");
+                    alert("You have defeated all the defenders of the multi-verse! You Win!");
+                    $("#atk-btn").text("Try Again!");
+                    return true;
+                }
 
             };
 
 
             $(".fighter").on("click", function(){
-                var character = this.id;
+                character = this.id;
                 console.log(character);
 
                 if (player1.selected === false) {
                     p1img.src = this.src;
 
-                    if (character === "bobaFett") {
-                        player1.getCharacter(characters.bobaFett);
-                     } else if (character === "c3po") {
-                        player1.getCharacter(characters.c3po);
-                     } else if (character === "chewbacca") {
-                        player1.getCharacter(characters.chewbacca);
-                     } else if (character === "darthMaul") {
-                        player1.getCharacter(characters.darthMaul);
-                     } else if (character === "darthVader") {
-                        player1.getCharacter(characters.darthVader);
-                     } else if (character === "hanSolo") {
-                        player1.getCharacter(characters.hanSolo);
-                     } else if (character === "lukeSkywalker") {
-                        player1.getCharacter(characters.lukeSkywalker);
-                     } else if (character === "obiWanKenobi") {
-                        player1.getCharacter(characters.obiWanKenobi);
-                     } else if (character === "princessLeia") {
-                        player1.getCharacter(characters.princessLeia);
-                     } else if (character === "r2d2") {
-                        player1.getCharacter(characters.r2d2);
-                     } else if (character === "stormTrooper") {
-                        player1.getCharacter(characters.stormTrooper);
-                     } else if (character === "yoda") {
-                        player1.getCharacter(characters.yoda);
-                     } else {
-                         alert("You broke the game, good work.");
-                     }
-                     $("#system-alerts").prepend("<span>>> You have selected " + player1.name +" as your fighter.</span>");
+                    player1.getCharacter(characters[character]);
+                    $("#p1").text(characters[character]["name"]);
+                    $("#system-alerts").prepend("<span style='color: green;'>>> You have selected " + player1.name +" as your fighter.</span>");
                     player1.loadStats();
-                    $(this).css("opacity", "0.05");
+                    $(this).css("opacity", "0.25");
 
                 } else if (player2.selected === false) {
                     p2img.src = this.src;
 
-                    if (character === "bobaFett") {
-                        player2.getCharacter(characters.bobaFett);
-                     } else if (character === "c3po") {
-                        player2.getCharacter(characters.c3po);
-                     } else if (character === "chewbacca") {
-                        player2.getCharacter(characters.chewbacca);
-                     } else if (character === "darthMaul") {
-                        player2.getCharacter(characters.darthMaul);
-                     } else if (character === "darthVader") {
-                        player2.getCharacter(characters.darthVader);
-                     } else if (character === "hanSolo") {
-                        player2.getCharacter(characters.hanSolo);
-                     } else if (character === "lukeSkywalker") {
-                        player2.getCharacter(characters.lukeSkywalker);
-                     } else if (character === "obiWanKenobi") {
-                        player2.getCharacter(characters.obiWanKenobi);
-                     } else if (character === "princessLeia") {
-                        player2.getCharacter(characters.princessLeia);
-                     } else if (character === "r2d2") {
-                        player2.getCharacter(characters.r2d2);
-                     } else if (character === "stormTrooper") {
-                        player2.getCharacter(characters.stormTrooper);
-                     } else if (character === "yoda") {
-                        player2.getCharacter(characters.yoda);
-                     } else {
-                         alert("You broke the game, good work.");
-                     }
-                    
-                     $("#system-alerts").prepend("<span>>> An Enemy has appeared. Prepare to battle!</span>");
+                    player2.getCharacter(characters[character]);
+                    $("#p2").text(characters[character]["name"]);                  
+                    $("#system-alerts").prepend("<span>>> An Enemy has appeared. Prepare to battle!</span>");
                     player2.loadStats();
-                    $(this).css("opacity", "0.05");
-
+                    $(this).css("opacity", "0.25");
+                } else if (player1.isAlive() === false) {
+                    $("#system-alerts").prepend("<span>>> You have been defeated. Please try again!</span>");
                 } else {
                     $("#system-alerts").prepend("<span>>> Battle in progress. Defeat your currently enemy before selecting your next opponent.</span>");
                 }
+
             });
 
             $("#atk-btn").on("click", function() {
                 if (player1.selected === true && player2.selected === true){
-                    player1.attack();
+                    if (player1.isAlive() === true) {
+                        player1.attack();
+                    } else {
+                        location.reload();
+                    }
+                } else if (checkStatus() === true) {
+                    location.reload();
                 } else {
                     $("#system-alerts").prepend("<span>>> Please select your opponent to begin the battle.</span>");
                 }
             });
-
         });
     </script>
   </body>
